@@ -18,7 +18,7 @@ type DbEmailServerData15 struct {
 	Username   string
 }
 
-type awsEmail struct {
+type AwsEmail struct {
 	fromEmail  string
 	toEmail    string
 	subject    string
@@ -26,7 +26,17 @@ type awsEmail struct {
 	emailSetup DbEmailServerData15
 }
 
-func (p *awsEmail) Send() error {
+func NewAwsEmail(fromEmail string, toEmail string, subject string, body string, emailSetup DbEmailServerData15) *AwsEmail {
+	a := new(AwsEmail)
+	a.fromEmail = fromEmail
+	a.toEmail = toEmail
+	a.subject = subject
+	a.body = body
+	a.emailSetup = emailSetup
+	return a
+}
+
+func (p *AwsEmail) Send() error {
 	from := mail.Address{"", p.fromEmail}
 	to := mail.Address{"", p.toEmail}
 
