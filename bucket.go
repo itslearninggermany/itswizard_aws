@@ -61,6 +61,7 @@ func (p *Bucket) SetName(name string) {
 }
 
 /*
+Todo: Error !!!!!
 creates the bucket in aws
 */
 func (p *Bucket) Create() error {
