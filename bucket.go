@@ -144,10 +144,29 @@ func (p *Bucket) GetTheLatestUploadedFile() (lastFile string, err error) {
 }
 
 /*
+Download a File
+*/
+func (p *Bucket) DownloadAFile(filename string) (out []byte, err error) {
 
+	buffer := aws.NewWriteAtBuffer([]byte(""))
+
+	downloader := s3manager.NewDownloader(p.session)
+	_, err = downloader.Download(buffer,
+		&s3.GetObjectInput{
+			Bucket: aws.String(p.name),
+			Key:    aws.String(filename),
+		})
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer.Bytes(), nil
+}
+
+/*
 taregetpath must have a "/" at the end!
 */
-func (p *Bucket) DownloadAFile(filename string, targetpath string) error {
+func (p *Bucket) DownloadAFileAndStore(filename string, targetpath string) error {
 	file, err := os.Create(fmt.Sprint(targetpath, filename))
 	if err != nil {
 		return err
